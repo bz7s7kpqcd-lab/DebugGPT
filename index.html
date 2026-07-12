@@ -1,1 +1,833 @@
-https://claude.ai/public/artifacts/9cdc3b08-0937-4f50-83d7-f2febad61c2b
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DebugGPT — Built by AI. Understood by humans.</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: #1e1e2e;
+      --accent: #7c6af7;
+      --accent-dim: #3d3478;
+      --green: #22c55e;
+      --yellow: #facc15;
+      --red: #f87171;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── LANDING ── */
+    #landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #landing::before {
+      content: '';
+      position: absolute;
+      top: -160px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(124,106,247,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124,106,247,0.12);
+      border: 1px solid var(--accent-dim);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .tagline {
+      font-size: clamp(14px, 3vw, 18px);
+      color: var(--muted);
+      font-family: var(--mono);
+      margin-bottom: 48px;
+      letter-spacing: 0.02em;
+    }
+
+    .cta-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 16px 36px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--sans);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-btn:hover {
+      background: #9585f9;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 32px rgba(124,106,247,0.35);
+    }
+
+    .error-preview {
+      margin-top: 64px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      text-align: left;
+      max-width: 480px;
+      width: 100%;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .error-preview .ep-label {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .error-preview .ep-error {
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+
+    .error-preview .ep-result {
+      color: var(--green);
+    }
+
+    .pricing-block {
+      margin-top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      text-align: left;
+      max-width: 480px;
+      width: 100%;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .pricing-block .ep-label {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .pricing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .pricing-row + .pricing-row {
+      border-top: 1px solid var(--border);
+    }
+
+    .pricing-tier {
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .pricing-tier strong {
+      color: var(--accent);
+      display: block;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .pricing-cta {
+      background: none;
+      border: 1px solid var(--accent-dim);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pricing-cta:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── DEBUG SCREEN ── */
+    #debug {
+      display: none;
+      min-height: 100vh;
+      padding: 40px 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .screen-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .back-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .screen-title {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .field {
+      margin-bottom: 24px;
+    }
+
+    .field label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .field textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 16px;
+      border-radius: 8px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+
+    .field textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .field textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .analyze-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--sans);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .analyze-btn:hover:not(:disabled) {
+      background: #9585f9;
+      box-shadow: 0 8px 32px rgba(124,106,247,0.35);
+    }
+
+    .analyze-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .loading-bar {
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .loading-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: load 1.8s ease-in-out infinite;
+    }
+
+    @keyframes load {
+      0% { width: 0%; margin-left: 0; }
+      50% { width: 70%; margin-left: 15%; }
+      100% { width: 0%; margin-left: 100%; }
+    }
+
+    /* ── RESULTS SCREEN ── */
+    #results {
+      display: none;
+      min-height: 100vh;
+      padding: 40px 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .result-card-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .result-card-content {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .result-card.root-cause {
+      border-color: var(--accent-dim);
+      background: rgba(124,106,247,0.07);
+    }
+
+    .result-card.root-cause .result-card-label {
+      color: var(--accent);
+    }
+
+    .confidence-bar-wrap {
+      margin-top: 12px;
+    }
+
+    .confidence-bar-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .confidence-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: var(--green);
+      transition: width 1s ease;
+    }
+
+    .confidence-num {
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    .fix-block {
+      background: rgba(34,197,94,0.07);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--green);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      margin-top: 12px;
+    }
+
+    .issues-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .issue-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .issue-icon { flex-shrink: 0; margin-top: 1px; }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-top: 16px;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .new-debug-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--sans);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .new-debug-btn:hover {
+      background: #9585f9;
+    }
+
+    .no-issues {
+      text-align: center;
+      padding: 40px;
+      font-family: var(--mono);
+      color: var(--green);
+      font-size: 14px;
+    }
+
+    .no-issues .check { font-size: 40px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+<!-- ── SCREEN 1: LANDING ── -->
+<section id="landing">
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Instant Debugging · No API Required
+  </div>
+
+  <h1>Stop guessing.<br><span>Understand</span> what<br>AI built.</h1>
+
+  <p class="tagline">// Built by AI. Understood by humans.</p>
+
+  <button class="cta-btn" onclick="showDebug()">Analyze My Error →</button>
+
+  <p style="margin-top:16px;font-family:var(--mono);font-size:11px;color:var(--muted);">🔗 debuggptapp.netlify.app</p>
+
+  <div class="error-preview">
+    <div class="ep-label">Example input</div>
+    <div class="ep-error">TypeError: Cannot read property 'name' of undefined</div>
+    <div class="ep-result">
+      ✓ Root cause identified<br>
+      ✓ Fix generated<br>
+      ✓ Confidence: 91%
+    </div>
+  </div>
+
+  <div class="pricing-block">
+    <div class="ep-label">Pricing</div>
+    <div class="pricing-row">
+      <div class="pricing-tier">
+        <strong>Free</strong>
+        15 debug sessions / month
+      </div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-tier">
+        <strong>Pro — $9/mo</strong>
+        Unlimited debug sessions
+      </div>
+      <button class="pricing-cta" onclick="window.location.href='#'">Upgrade</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCREEN 2: DEBUG FORM ── -->
+<section id="debug">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showLanding()">← Back</button>
+    <span class="screen-title">DebugGPT</span>
+  </div>
+
+  <div class="field">
+    <label>Error Message</label>
+    <textarea id="errorInput" rows="4" placeholder="Paste your error here&#10;&#10;e.g. TypeError: Cannot read property 'name' of undefined"></textarea>
+  </div>
+
+  <div class="field">
+    <label>Code Snippet</label>
+    <textarea id="codeInput" rows="10" placeholder="Paste the code causing the error&#10;&#10;e.g. async function fetchUser() {&#10;  const data = fetch('/api/user')&#10;  return data.name&#10;}"></textarea>
+  </div>
+
+  <button class="analyze-btn" id="analyzeBtn" onclick="runAnalysis()">Analyze →</button>
+
+  <div class="loading" id="loadingState">
+    <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+    Analyzing your code...
+  </div>
+</section>
+
+<!-- ── SCREEN 3: RESULTS ── -->
+<section id="results">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showDebug()">← Edit</button>
+    <span class="screen-title">Debug Report</span>
+  </div>
+
+  <div id="resultsContent"></div>
+
+  <button class="copy-btn" onclick="copyResults()">Copy Full Report</button>
+  <button class="new-debug-btn" onclick="newDebug()">Debug Another Error</button>
+</section>
+
+<script>
+  // ── Navigation ──
+  function showLanding() {
+    document.getElementById('landing').style.display = 'flex';
+    document.getElementById('debug').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
+  }
+
+  function showDebug() {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('debug').style.display = 'block';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('analyzeBtn').style.display = 'block';
+  }
+
+  function showResults() {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('debug').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+  }
+
+  function newDebug() {
+    document.getElementById('errorInput').value = '';
+    document.getElementById('codeInput').value = '';
+    showDebug();
+  }
+
+  // ── Analysis Engine (no API needed) ──
+  function analyzeCode(errorMsg, code) {
+    const issues = [];
+    const lines = code.split('\n');
+
+    // Track async context
+    function isInsideAsync(lineIndex) {
+      for (let i = lineIndex; i >= 0; i--) {
+        if (/async\s+function|async\s*\(|async\s+\w+\s*=>/.test(lines[i])) return true;
+        if (/^function\s|^\w+\s*=\s*function/.test(lines[i])) return false;
+      }
+      return false;
+    }
+
+    lines.forEach((line, i) => {
+      const lineNum = i + 1;
+      const trimmed = line.trim();
+
+      // await outside async
+      if (/\bawait\b/.test(trimmed) && !isInsideAsync(i)) {
+        issues.push({
+          icon: '❌',
+          text: `Line ${lineNum}: \`await\` used outside an async function`,
+          severity: 'error'
+        });
+      }
+
+      // fetch without await or .catch
+      if (/\bfetch\s*\(/.test(trimmed) && !/await\s+fetch/.test(trimmed) && !/.catch\s*\(/.test(trimmed)) {
+        issues.push({
+          icon: '⚠️',
+          text: `Line ${lineNum}: \`fetch()\` called without \`await\` or \`.catch()\` — unhandled Promise`,
+          severity: 'warning'
+        });
+      }
+
+      // undefined/null property access
+      if (/\bundefined\b|\bnull\b/.test(trimmed) && /\./.test(trimmed)) {
+        issues.push({
+          icon: '⚠️',
+          text: `Line ${lineNum}: Possible property access on \`undefined\` or \`null\``,
+          severity: 'warning'
+        });
+      }
+
+      // console.log left in
+      if (/console\.log/.test(trimmed)) {
+        issues.push({
+          icon: '💡',
+          text: `Line ${lineNum}: \`console.log\` found — remove before production`,
+          severity: 'info'
+        });
+      }
+
+      // var usage
+      if (/^\s*var\s+/.test(line)) {
+        issues.push({
+          icon: '💡',
+          text: `Line ${lineNum}: \`var\` used — prefer \`const\` or \`let\` to avoid scope issues`,
+          severity: 'info'
+        });
+      }
+
+      // missing return in function
+      if (/^}\s*$/.test(trimmed) && i > 0) {
+        const block = lines.slice(Math.max(0, i - 15), i).join('\n');
+        if (/function/.test(block) && !/return/.test(block) && !/void/.test(block)) {
+          issues.push({
+            icon: '💡',
+            text: `Around line ${lineNum}: Function may be missing a \`return\` statement`,
+            severity: 'info'
+          });
+        }
+      }
+    });
+
+    // Error message pattern matching
+    let rootCause = '';
+    let explanation = '';
+    let fix = '';
+    let confidence = 70;
+
+    const err = errorMsg.toLowerCase();
+
+    if (err.includes("cannot read propert") || err.includes("cannot read properties")) {
+      const propMatch = errorMsg.match(/['"](\w+)['"]/);
+      const prop = propMatch ? propMatch[1] : 'property';
+      rootCause = `Accessing \`${prop}\` on an undefined or null value`;
+      explanation = `The variable holding your object is empty at the time this line runs. This usually means data hasn't loaded yet, an API returned nothing, the variable name is misspelled, or the object structure is different from what you expect (e.g. \`user.name\` vs \`user.profile.name\`).`;
+      fix = `// Option 1: Optional chaining (safest)\nobj?.${prop}\n\n// Option 2: Guard check\nif (obj && obj.${prop}) { ... }\n\n// Option 3: Default value\nconst val = obj?.${prop} ?? 'default';`;
+      confidence = 92;
+    } else if (err.includes("is not a function")) {
+      const fnMatch = errorMsg.match(/(\w+)\s+is not a function/i);
+      const fn = fnMatch ? fnMatch[1] : 'value';
+      rootCause = `\`${fn}\` is not a function — it's undefined or a different type`;
+      explanation = `You're calling \`${fn}()\` but it's not actually a function. Either it was never defined, it wasn't exported/imported correctly, or the variable holds a different type (string, number, object).`;
+      fix = `// Check what the value actually is:\nconsole.log(typeof ${fn});\n\n// Ensure it's properly imported:\nimport { ${fn} } from './yourModule';\n\n// Or check it exists before calling:\nif (typeof ${fn} === 'function') ${fn}();`;
+      confidence = 88;
+    } else if (err.includes("unexpected token") || err.includes("syntaxerror")) {
+      rootCause = `Syntax error — the JavaScript parser hit unexpected code`;
+      explanation = `There's a typo, missing bracket, comma, or parenthesis somewhere near the line shown. JavaScript can't parse the file at all until this is fixed.`;
+      fix = `// Common fixes:\n// 1. Check for missing closing brackets } ) ]\n// 2. Check for missing commas in objects/arrays\n// 3. Check for unclosed template literals \`\n// 4. Check for missing semicolons after statements`;
+      confidence = 85;
+    } else if (err.includes("module not found") || err.includes("cannot find module")) {
+      const modMatch = errorMsg.match(/['"]([^'"]+)['"]/);
+      const mod = modMatch ? modMatch[1] : 'module';
+      rootCause = `Module \`${mod}\` not found`;
+      explanation = `Node.js can't find the package or file you're importing. Either it's not installed, the path is wrong, or the filename doesn't match exactly (case-sensitive).`;
+      fix = `// If it's an npm package:\nnpm install ${mod}\n\n// If it's a local file, check the path:\n// Wrong:  require('./Utils')\n// Right:  require('./utils')`;
+      confidence = 95;
+    } else if (err.includes("referenceerror")) {
+      const refMatch = errorMsg.match(/(\w+)\s+is not defined/i);
+      const ref = refMatch ? refMatch[1] : 'variable';
+      rootCause = `\`${ref}\` is used before it's defined`;
+      explanation = `You're referencing \`${ref}\` but it hasn't been declared in scope. It might be a typo, defined in a different file without being exported, or declared after it's used.`;
+      fix = `// Declare before use:\nconst ${ref} = ...;\n\n// Or check your imports:\nimport { ${ref} } from './yourFile';`;
+      confidence = 90;
+    } else if (err.includes("typeerror")) {
+      rootCause = `Type mismatch — wrong data type used in operation`;
+      explanation = `JavaScript received a type it didn't expect. A string where a number was needed, an object where an array was expected, or a null where a real value was required.`;
+      fix = `// Debug the actual type:\nconsole.log(typeof yourVariable);\nconsole.log(yourVariable);\n\n// Add type guards:\nif (typeof x === 'string') { ... }`;
+      confidence = 75;
+    } else {
+      rootCause = `Runtime error detected in your code`;
+      explanation = `The error message suggests something went wrong at runtime. Paste both the full error and the relevant code snippet for a more precise diagnosis.`;
+      fix = `// General debugging steps:\n// 1. Add console.log() before the error line\n// 2. Check all variable values are what you expect\n// 3. Wrap in try/catch to see the full stack trace`;
+      confidence = 60;
+    }
+
+    // Boost confidence if code issues match error
+    if (issues.length > 0) confidence = Math.min(confidence + 5, 99);
+
+    return { rootCause, explanation, fix, confidence, issues };
+  }
+
+  let lastReport = '';
+
+  function runAnalysis() {
+    const errorMsg = document.getElementById('errorInput').value.trim();
+    const code = document.getElementById('codeInput').value.trim();
+
+    if (!errorMsg && !code) {
+      alert('Paste an error message or code snippet first.');
+      return;
+    }
+
+    document.getElementById('analyzeBtn').style.display = 'none';
+    document.getElementById('loadingState').style.display = 'block';
+
+    setTimeout(() => {
+      const result = analyzeCode(errorMsg || '', code || '');
+      renderResults(result, errorMsg, code);
+      showResults();
+    }, 1200);
+  }
+
+  function renderResults(result, errorMsg, code) {
+    const { rootCause, explanation, fix, confidence, issues } = result;
+
+    const issuesHTML = issues.length > 0
+      ? `<ul class="issues-list">${issues.map(i =>
+          `<li class="issue-item"><span class="issue-icon">${i.icon}</span><span>${i.text}</span></li>`
+        ).join('')}</ul>`
+      : `<div style="color:var(--green);font-family:var(--mono);font-size:13px;">✓ No obvious code issues detected</div>`;
+
+    const html = `
+      ${rootCause ? `
+      <div class="result-card root-cause">
+        <div class="result-card-label">Root Cause</div>
+        <div class="result-card-content">${rootCause}</div>
+      </div>` : ''}
+
+      ${explanation ? `
+      <div class="result-card">
+        <div class="result-card-label">Why It Happened</div>
+        <div class="result-card-content">${explanation}</div>
+      </div>` : ''}
+
+      <div class="result-card">
+        <div class="result-card-label">Confidence Score</div>
+        <div class="confidence-num">${confidence}%</div>
+        <div class="confidence-bar-wrap">
+          <div class="confidence-bar-track">
+            <div class="confidence-bar-fill" id="confBar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      ${fix ? `
+      <div class="result-card">
+        <div class="result-card-label">Suggested Fix</div>
+        <div class="fix-block">${fix}</div>
+      </div>` : ''}
+
+      <div class="result-card">
+        <div class="result-card-label">Code Issues Found</div>
+        ${issuesHTML}
+      </div>
+    `;
+
+    document.getElementById('resultsContent').innerHTML = html;
+
+    lastReport = [
+      `ROOT CAUSE\n${rootCause}`,
+      `WHY IT HAPPENED\n${explanation}`,
+      `CONFIDENCE\n${confidence}%`,
+      `SUGGESTED FIX\n${fix}`,
+      issues.length > 0 ? `CODE ISSUES\n${issues.map(i => i.text).join('\n')}` : ''
+    ].filter(Boolean).join('\n\n---\n\n');
+
+    setTimeout(() => {
+      const bar = document.getElementById('confBar');
+      if (bar) bar.style.width = confidence + '%';
+    }, 100);
+  }
+
+  function copyResults() {
+    if (!lastReport) return;
+    navigator.clipboard.writeText(lastReport).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = '✓ Copied to clipboard';
+      setTimeout(() => btn.textContent = 'Copy Full Report', 2000);
+    });
+  }
+</script>
+</body>
+</html>
+
